@@ -29,17 +29,29 @@ To add this token to GitHub:
 5. Value: Paste your npm token
 6. Click "Add secret"
 
-### 2. `GITHUB_TOKEN`
+### 2. `DOCKER_USERNAME` and `DOCKER_PASSWORD`
+
+These secrets are used to publish Docker images to Docker Hub.
+
+To set up Docker Hub credentials:
+
+1. Create or log in to your Docker Hub account at [hub.docker.com](https://hub.docker.com/)
+2. Create an access token under Account Settings > Security
+3. Add these secrets to your GitHub repository:
+   - `DOCKER_USERNAME`: Your Docker Hub username
+   - `DOCKER_PASSWORD`: Your Docker Hub access token
+
+### 3. `GITHUB_TOKEN`
 
 This is automatically provided by GitHub Actions, so you don't need to configure it manually.
 
-## Docker Hub Configuration (Optional)
+## Docker Hub Configuration
 
-If you want to publish to Docker Hub instead of or in addition to GitHub Container Registry:
+Before your first release, make sure to:
 
-1. Create a Docker Hub access token
-2. Add `DOCKER_USERNAME` and `DOCKER_PASSWORD` secrets to GitHub
-3. Modify the docker.yml workflow to use Docker Hub
+1. Create a repository named `watercrawl/mcp` on Docker Hub
+2. Set appropriate visibility and description for your Docker image
+3. Verify that your Docker Hub user has push permissions for this repository
 
 ## Configuring npm for Scoped Package
 
@@ -71,16 +83,16 @@ Include `BREAKING CHANGE:` in the commit body or footer to trigger a major versi
 
 ## Docker Usage
 
-The Docker image is built automatically and published to GitHub Container Registry.
+The Docker image is built automatically and published to Docker Hub.
 
 To use the Docker image:
 
 ```bash
 # Pull the image
-docker pull ghcr.io/watercrawl/watercrawl-mcp:latest
+docker pull watercrawl/mcp:latest
 
 # Run the container
-docker run -p 3000:3000 -e WATERCRAWL_API_KEY=your-api-key ghcr.io/watercrawl/watercrawl-mcp:latest
+docker run -p 3000:3000 -e WATERCRAWL_API_KEY=your-api-key watercrawl/mcp:latest
 
 # Or use docker-compose
 docker-compose up

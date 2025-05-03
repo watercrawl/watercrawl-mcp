@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   watercrawl-mcp:
-    image: ghcr.io/watercrawl/watercrawl-mcp:latest
+    image: watercrawl/mcp:latest
     container_name: watercrawl-mcp
     environment:
       - WATERCRAWL_API_KEY=${WATERCRAWL_API_KEY}
