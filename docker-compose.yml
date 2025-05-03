@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  watercrawl-mcp:
+    image: ghcr.io/watercrawl/watercrawl-mcp:latest
+    container_name: watercrawl-mcp
+    environment:
+      - WATERCRAWL_API_KEY=${WATERCRAWL_API_KEY}
+      - WATERCRAWL_BASE_URL=${WATERCRAWL_BASE_URL:-https://app.watercrawl.dev}
+      - SSE_PORT=${SSE_PORT:-3000}
+      - SSE_ENDPOINT=${SSE_ENDPOINT:-/sse}
+    ports:
+      - "${SSE_PORT:-3000}:3000"
+    restart: unless-stopped

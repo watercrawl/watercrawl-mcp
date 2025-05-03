@@ -1,0 +1,34 @@
+# Git related
+.git
+.github
+.gitignore
+.releaserc.json
+
+# Node.js
+node_modules
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Project specific
+src
+tests
+scripts
+*.ts
+tsconfig.json
+.eslintrc
+.prettier*
+*.test.js
+coverage
+
+# Development environment
+.vscode
+.idea
+*.swp
+*.swo
+.DS_Store
+
+# Environment
+.env
+.env.*
+!.env.example
