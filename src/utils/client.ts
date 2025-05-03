@@ -1,4 +1,4 @@
-import { WaterCrawlAPIClient } from "./index.js";
+import { WaterCrawlAPIClient } from "@watercrawl/nodejs";
 
 export const getClient = (apiKey = "") => {
   const BASE_URL = process.env.WATERCRAWL_BASE_URL || "https://app.watercrawl.dev";

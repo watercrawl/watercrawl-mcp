@@ -78,7 +78,7 @@ wc-mcp/
 1. Clone the repository and install dependencies:
 
 ```bash
-git clone https://github.com/watercrawl/watercrawl-mcp.git
+git clone https://github.com/watercrawl/watercrawl-mcp
 cd watercrawl-mcp
 npm install
 ```
