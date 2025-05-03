@@ -7787,9 +7787,11 @@ var parameters = z.object({
     accept_cookies_selector: z.string().optional().describe("CSS selector for accept cookies button"),
     locale: z.string().optional().describe("Locale for the page"),
     extra_headers: z.record(z.string()).optional().describe("Additional HTTP headers"),
-    actions: z.array(z.object({
-      type: z.enum(["pdf", "screenshot"]).describe("Action type")
-    })).optional().describe("Actions to perform on the page")
+    actions: z.array(
+      z.object({
+        type: z.enum(["pdf", "screenshot"]).describe("Action type")
+      })
+    ).optional().describe("Actions to perform on the page")
   }).optional().describe("Page scraping options"),
   sync: z.boolean().optional().default(true).describe("Wait for scraping to complete"),
   download: z.boolean().optional().default(true).describe("Download content immediately")
@@ -7930,7 +7932,10 @@ var manageSearch = async (args, { session }) => {
         if (!args.searchRequestId) {
           throw new import_fastmcp5.UserError("searchRequestId is required for 'get' action");
         }
-        const getResult = await client.getSearchRequest(args.searchRequestId, args.download !== false);
+        const getResult = await client.getSearchRequest(
+          args.searchRequestId,
+          args.download !== false
+        );
         return JSON.stringify(getResult);
       case "stop":
         if (!args.searchRequestId) {
@@ -8097,7 +8102,9 @@ program2.command("sse").description("Start the server with SSE transport").optio
     process.env.WATERCRAWL_BASE_URL = program2.opts().baseUrl;
   }
   if (!process.env.WATERCRAWL_BASE_URL) {
-    console.error("WATERCRAWL_BASE_URL is not configured. Use --base-url or set WATERCRAWL_BASE_URL in .env");
+    console.error(
+      "WATERCRAWL_BASE_URL is not configured. Use --base-url or set WATERCRAWL_BASE_URL in .env"
+    );
     process.exit(1);
   }
   if (program2.opts().apiKey) {
@@ -8122,11 +8129,15 @@ program2.command("stdio", { isDefault: true }).description("Start the server wit
     process.env.WATERCRAWL_API_KEY = program2.opts().apiKey;
   }
   if (!process.env.WATERCRAWL_BASE_URL) {
-    console.error("WATERCRAWL_BASE_URL is not configured. Use --base-url or set WATERCRAWL_BASE_URL in .env");
+    console.error(
+      "WATERCRAWL_BASE_URL is not configured. Use --base-url or set WATERCRAWL_BASE_URL in .env"
+    );
     process.exit(1);
   }
   if (!process.env.WATERCRAWL_API_KEY) {
-    console.error("WATERCRAWL_API_KEY is not configured. Use --api-key or set WATERCRAWL_API_KEY in .env");
+    console.error(
+      "WATERCRAWL_API_KEY is not configured. Use --api-key or set WATERCRAWL_API_KEY in .env"
+    );
     process.exit(1);
   }
   const server = setupServer();

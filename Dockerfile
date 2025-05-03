@@ -13,7 +13,7 @@ RUN npm install -g @watercrawl/mcp
 EXPOSE 3000
 
 # Set entrypoint with default SSE mode
-ENTRYPOINT ["watercrawl-mcp", "sse"]
+ENTRYPOINT ["watercrawl-mcp"]
 
 # Default command line arguments
-CMD ["--port", "3000", "--endpoint", "/sse"]
+CMD ["sse", "--port", "3000", "--endpoint", "/sse"]

@@ -1,7 +1,7 @@
-import { z } from "zod";
-import { Tool } from "fastmcp/src/FastMCP";
-import { Context, ToolParameters, UserError } from "fastmcp";
-import { getClient } from "@utils/client";
+import { z } from 'zod';
+import { Tool } from 'fastmcp/src/FastMCP';
+import { Context, ToolParameters, UserError } from 'fastmcp';
+import { getClient } from '@utils/client';
 
 interface SitemapArgs {
   crawlRequestId: string;
@@ -29,13 +29,18 @@ const downloadSitemap = async (args: SitemapArgs | any, { session }: Context<any
 };
 
 const parameters = z.object({
-  crawlRequestId: z.string().describe("UUID of the crawl request"),
-  format: z.enum(['json', 'graph', 'markdown']).optional().default('json').describe("Format to return the sitemap in"),
+  crawlRequestId: z.string().describe('UUID of the crawl request'),
+  format: z
+    .enum(['json', 'graph', 'markdown'])
+    .optional()
+    .default('json')
+    .describe('Format to return the sitemap in'),
 });
 
 export const SitemapTool: Tool<any, ToolParameters> = {
-  name: "download-sitemap",
-  description: "Download the sitemap from a crawl request in different formats (JSON, graph, or markdown)",
+  name: 'download-sitemap',
+  description:
+    'Download the sitemap from a crawl request in different formats (JSON, graph, or markdown)',
   parameters: parameters,
   execute: downloadSitemap,
 };

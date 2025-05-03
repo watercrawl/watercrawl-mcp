@@ -1,7 +1,7 @@
-import http from "http";
-import { getClient } from "@utils/client.js";
-import * as process from "node:process";
-import { WaterCrawlAPIClient } from "@utils/index.js";
+import http from 'http';
+import { getClient } from '@utils/client';
+import * as process from 'node:process';
+import { WaterCrawlAPIClient } from '@watercrawl/nodejs';
 
 export interface WaterCrawlSession {
   apiKey: string;
@@ -14,18 +14,19 @@ export const authenticate = async (request: http.IncomingMessage): Promise<Water
 
   if (request.headers.authorization) {
     const auth: string = request.headers.authorization as string;
-    apiKey = auth.split("Bearer ")[1];
+    apiKey = auth.split('Bearer ')[1];
   } else {
     // read from query params apikey=<API_KEY>
-    const parsed_query = new URLSearchParams(request.url?.split("?")[1]);
+    const parsed_query = new URLSearchParams(request.url?.split('?')[1]);
 
-    apiKey = parsed_query.get("apikey");
+    apiKey = parsed_query.get('apikey');
   }
 
   if (!apiKey) {
     throw new Response(null, {
       status: 401,
-      statusText: "Unauthorized, missing api key you have to send it in header with key 'authorization' or in query params with key 'apikey'",
+      statusText:
+        "Unauthorized, missing api key you have to send it in header with key 'authorization' or in query params with key 'apikey'",
     });
   }
 
@@ -37,7 +38,7 @@ export const authenticate = async (request: http.IncomingMessage): Promise<Water
     console.error(e);
     throw new Response(null, {
       status: 401,
-      statusText: "Unauthorized, Invalid api key",
+      statusText: 'Unauthorized, Invalid api key',
     });
   }
 

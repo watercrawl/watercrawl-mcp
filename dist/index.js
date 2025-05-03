@@ -4466,9 +4466,11 @@ var parameters = z.object({
     accept_cookies_selector: z.string().optional().describe("CSS selector for accept cookies button"),
     locale: z.string().optional().describe("Locale for the page"),
     extra_headers: z.record(z.string()).optional().describe("Additional HTTP headers"),
-    actions: z.array(z.object({
-      type: z.enum(["pdf", "screenshot"]).describe("Action type")
-    })).optional().describe("Actions to perform on the page")
+    actions: z.array(
+      z.object({
+        type: z.enum(["pdf", "screenshot"]).describe("Action type")
+      })
+    ).optional().describe("Actions to perform on the page")
   }).optional().describe("Page scraping options"),
   sync: z.boolean().optional().default(true).describe("Wait for scraping to complete"),
   download: z.boolean().optional().default(true).describe("Download content immediately")
@@ -4609,7 +4611,10 @@ var manageSearch = async (args, { session }) => {
         if (!args.searchRequestId) {
           throw new import_fastmcp5.UserError("searchRequestId is required for 'get' action");
         }
-        const getResult = await client.getSearchRequest(args.searchRequestId, args.download !== false);
+        const getResult = await client.getSearchRequest(
+          args.searchRequestId,
+          args.download !== false
+        );
         return JSON.stringify(getResult);
       case "stop":
         if (!args.searchRequestId) {
