@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:20-alpine
 
 # Set environment variables
 ENV NODE_ENV=production \
