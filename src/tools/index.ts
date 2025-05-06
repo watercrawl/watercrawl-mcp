@@ -5,6 +5,7 @@ import { SitemapTool } from './sitemap';
 import { CrawlManagerTool } from './crawl-manager';
 import { SearchManagerTool } from './search-manager';
 import { MonitorTool } from './monitor';
+import { CrawlTool } from './crawl';
 
 export const tools: Tool<any, ToolParameters>[] = [
   ScrapeTool,
@@ -13,4 +14,5 @@ export const tools: Tool<any, ToolParameters>[] = [
   CrawlManagerTool,
   SearchManagerTool,
   MonitorTool,
+  CrawlTool,
 ];
