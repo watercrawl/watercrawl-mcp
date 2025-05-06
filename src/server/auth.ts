@@ -1,6 +1,5 @@
 import http from 'http';
 import { getClient } from '@utils/client';
-import * as process from 'node:process';
 import { WaterCrawlAPIClient } from '@watercrawl/nodejs';
 
 export interface WaterCrawlSession {
