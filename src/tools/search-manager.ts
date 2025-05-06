@@ -1,6 +1,5 @@
 import { z } from 'zod';
-import { Tool } from 'fastmcp/src/FastMCP';
-import { Context, ToolParameters, UserError } from 'fastmcp';
+import { Context, ToolParameters, UserError, Tool } from 'fastmcp';
 import { getClient } from '@utils/client';
 
 interface SearchManagerArgs {

@@ -1,6 +1,5 @@
-import { Tool } from 'fastmcp/src/FastMCP';
 import { ScrapeTool } from './scrape';
-import { ToolParameters } from 'fastmcp';
+import { Tool, ToolParameters } from 'fastmcp';
 import { SearchTool } from './search';
 import { SitemapTool } from './sitemap';
 import { CrawlManagerTool } from './crawl-manager';

@@ -1,6 +1,7 @@
 {
   "name": "@watercrawl/mcp",
   "version": "1.0.0",
+  "type": "module",
   "main": "dist/index.js",
   "bin": {
     "watercrawl-mcp": "bin/cli.js"

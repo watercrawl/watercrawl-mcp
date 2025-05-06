@@ -1,8 +1,7 @@
 import { z } from 'zod';
-import { Tool } from 'fastmcp/src/FastMCP';
-import { Context, ToolParameters, UserError } from 'fastmcp';
+import { Context, ToolParameters, UserError, Tool } from 'fastmcp';
 import { getClient } from '@utils/client';
-import { CrawlRequest } from '@utils/types';
+import type { CrawlRequest } from '@watercrawl/nodejs/dist/types';
 
 interface MonitorArgs {
   type: 'crawl' | 'search';

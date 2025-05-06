@@ -1,4 +1,7 @@
 #!/usr/bin/env node
 
-// Simple wrapper script that loads the actual bundled code
-require('../dist/cli.js');
+// Load Node.js 16 polyfills before anything else
+import './node16-preload.js';
+
+// Then import the main application
+import('../dist/cli.js');
