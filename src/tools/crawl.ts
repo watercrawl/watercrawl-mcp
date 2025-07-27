@@ -29,10 +29,21 @@ const parameters = z.object({
     .object({
       max_depth: z.number().optional().describe('Maximum depth to crawl'),
       page_limit: z.number().optional().describe('Maximum number of pages to crawl'),
-      allowed_domains: z.string().array().optional().describe('Allowed domains to crawl example: ["*.example.com"]'),
-      exclude_paths: z.string().array().optional().describe('Paths to exclude from crawling example: ["/path/*"]'),
-      include_paths: z.string().array().optional().describe('Paths to include in crawling example: ["/path/*"]'),
-
+      allowed_domains: z
+        .string()
+        .array()
+        .optional()
+        .describe('Allowed domains to crawl example: ["*.example.com"]'),
+      exclude_paths: z
+        .string()
+        .array()
+        .optional()
+        .describe('Paths to exclude from crawling example: ["/path/*"]'),
+      include_paths: z
+        .string()
+        .array()
+        .optional()
+        .describe('Paths to include in crawling example: ["/path/*"]'),
     })
     .optional()
     .describe('Spider options'),
@@ -66,7 +77,8 @@ const parameters = z.object({
 
 export const CrawlTool: Tool<any, ToolParameters> = {
   name: 'crawl',
-  description: 'Crawl a URL and its subpages with customizable depth and spider limitations. This is an async operation, with crawl manager you can get status and results.',
+  description:
+    'Crawl a URL and its subpages with customizable depth and spider limitations. This is an async operation, with crawl manager you can get status and results.',
   parameters: parameters,
   execute: crawlUrl,
 };

@@ -1,33 +1,38 @@
 import { z } from 'zod';
 import { Context, ToolParameters, UserError, Tool } from 'fastmcp';
 import { getClient } from '@utils/client';
-import type { PageOptions } from '@watercrawl/nodejs/dist/types';
+import type { CrawlRequest, PageOptions } from '@watercrawl/nodejs/dist/types';
 
 interface ScrapeArgs {
-  url: string;
+  urls: string[];
   pageOptions?: PageOptions;
-  sync?: boolean;
-  download?: boolean;
 }
 
 const scrapeUrl = async (args: ScrapeArgs | any, { session }: Context<any>) => {
   const client = getClient(session?.apiKey);
   try {
-    const req = await client.scrapeUrl(
-      args.url,
-      args.pageOptions || {},
-      {},
-      args.sync === false ? false : true,
-      args.download === false ? false : true,
-    );
-    return JSON.stringify(req);
+    const req = await client.createBatchCrawlRequest(args.urls, {}, args.pageOptions || {});
+    const results = [];
+    for await (const data of client.monitorCrawlRequest(req.uuid, true)) {
+      if (data.type === 'result') {
+        results.push(data.data);
+      }
+      if (data.type === 'state' && (data.data as CrawlRequest).status === 'finished') {
+        break;
+      }
+    }
+
+    return JSON.stringify({
+      ...req,
+      results,
+    });
   } catch (e) {
     throw new UserError(String(e));
   }
 };
 
 const parameters = z.object({
-  url: z.string().describe('URL to scrape'),
+  urls: z.string().array().describe('List of URLs to scrape'),
   pageOptions: z
     .object({
       exclude_tags: z.string().array().optional().describe('HTML tags to exclude'),
@@ -59,8 +64,9 @@ const parameters = z.object({
 });
 
 export const ScrapeTool: Tool<any, ToolParameters> = {
-  name: 'scrape-url',
-  description: 'Scrape a URL with optional configuration for page options, and more',
+  name: 'scrape-urls',
+  description:
+    'Scrape multiple(or single) URL(s) with optional configuration for page options, and more',
   parameters: parameters,
   execute: scrapeUrl,
 };

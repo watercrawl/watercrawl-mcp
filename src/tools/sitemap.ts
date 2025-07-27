@@ -3,43 +3,53 @@ import { Context, ToolParameters, UserError, Tool } from 'fastmcp';
 import { getClient } from '@utils/client';
 
 interface SitemapArgs {
-  crawlRequestId: string;
-  format?: 'json' | 'graph' | 'markdown';
+  url: string;
+  ignoreSitemapXml?: boolean;
+  includeSubdomains?: boolean;
+  searchTerm?: string;
+  download?: boolean;
 }
 
-const downloadSitemap = async (args: SitemapArgs | any, { session }: Context<any>) => {
+const Sitemap = async (args: SitemapArgs | any, { session }: Context<any>) => {
   const client = getClient(session?.apiKey);
   try {
-    switch (args.format) {
-      case 'graph':
-        const graphData = await client.downloadSitemapGraph(args.crawlRequestId);
-        return JSON.stringify(graphData);
-      case 'markdown':
-        const markdownData = await client.downloadSitemapMarkdown(args.crawlRequestId);
-        return markdownData;
-      case 'json':
-      default:
-        const jsonData = await client.downloadSitemap(args.crawlRequestId);
-        return JSON.stringify(jsonData);
-    }
+    const req = await client.createSitemapRequest(
+      args.url,
+      {
+        ignore_sitemap_xml: args.ignoreSitemapXml === undefined ? false : args.ignoreSitemapXml,
+        include_subdomains: args.includeSubdomains === undefined ? true : args.includeSubdomains,
+        search: args.searchTerm || null,
+        include_paths: [],
+        exclude_paths: [],
+      },
+      true,
+      args.download === undefined ? false : args.download,
+    );
+
+    return JSON.stringify(req);
   } catch (e) {
     throw new UserError(String(e));
   }
 };
 
 const parameters = z.object({
-  crawlRequestId: z.string().describe('UUID of the crawl request'),
-  format: z
-    .enum(['json', 'graph', 'markdown'])
+  url: z.string().describe('URL to get sitemap for'),
+  ignoreSitemapXml: z.boolean().optional().default(false),
+  includeSubdomains: z.boolean().optional().default(true),
+  searchTerm: z.string().optional(),
+  download: z
+    .boolean()
+    .describe(
+      'If set to true, returns all sitemap links. If false, returns a direct link to download the full sitemap.json file.',
+    )
     .optional()
-    .default('json')
-    .describe('Format to return the sitemap in'),
+    .default(false),
 });
 
 export const SitemapTool: Tool<any, ToolParameters> = {
-  name: 'download-sitemap',
+  name: 'sitemap',
   description:
-    'Download the sitemap from a crawl request in different formats (JSON, graph, or markdown)',
+    'Create a sitemap for a given URL, optionally ignoring sitemap.xml and including subdomains',
   parameters: parameters,
-  execute: downloadSitemap,
+  execute: Sitemap,
 };

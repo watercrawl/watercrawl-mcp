@@ -7,8 +7,6 @@ interface SearchArgs {
   query: string;
   searchOptions?: SearchOptions;
   resultLimit?: number;
-  sync?: boolean;
-  download?: boolean;
 }
 
 const search = async (args: SearchArgs | any, { session }: Context<any>) => {
@@ -18,8 +16,8 @@ const search = async (args: SearchArgs | any, { session }: Context<any>) => {
       args.query,
       args.searchOptions || {},
       args.resultLimit || 5,
-      args.sync === false ? false : true,
-      args.download === false ? false : true,
+      true,
+      true,
     );
     return JSON.stringify(results);
   } catch (e) {
@@ -43,8 +41,6 @@ const parameters = z.object({
     .optional()
     .describe('Search configuration options'),
   resultLimit: z.number().optional().default(5).describe('Maximum number of results to return'),
-  sync: z.boolean().optional().default(true).describe('Wait for search to complete'),
-  download: z.boolean().optional().default(true).describe('Download content immediately'),
 });
 
 export const SearchTool: Tool<any, ToolParameters> = {
