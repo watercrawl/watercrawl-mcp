@@ -9,8 +9,8 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build": "npm run clean && node scripts/build.js",
-    "start": "tsx --require tsconfig-paths/register index.ts",
-    "cli": "tsx --require tsconfig-paths/register cli.ts",
+    "start": "tsx --require tsconfig-paths/register src/index.ts",
+    "cli": "tsx --require tsconfig-paths/register src/cli.ts",
     "fix-paths": "tsc-alias",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint --fix . --ext .ts",
@@ -36,7 +36,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@watercrawl/nodejs": "^1.1.0",
+    "@watercrawl/nodejs": "^1.2.1",
     "commander": "^13.1.0",
     "dotenv": "^16.5.0",
     "fastmcp": "^1.23.2",

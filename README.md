@@ -92,25 +92,9 @@ npm run build
 3. Link the package for local development:
 
 ```bash
-npm run dev:link
+npm link @watercrawl/mcp
 ```
 
-### Testing
-
-The project includes tests for both SSE and npx modes:
-
-```bash
-# Run all tests
-npm test
-
-# Run only SSE tests
-npm run test:sse
-
-# Run only npx tests
-npm run test:npx
-```
-
-Tests require a valid WaterCrawl API key to be set in the `.env` file or passed as an environment variable.
 
 ### Contribution Guidelines
 
