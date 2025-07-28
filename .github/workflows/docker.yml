@@ -7,19 +7,37 @@ on:
     workflows: ["Release"]
     branches: [main]
     types: [completed]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to build and push (e.g., 1.0.1)'
+        required: true
+        type: string
 
 jobs:
   docker:
     name: Build & Push Docker Image
     runs-on: ubuntu-latest
-    # Only run if the release workflow completed successfully or a release was published
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'release' }}
+    # Only run if the release workflow completed successfully, a release was published, or manually triggered
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'release' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           ref: main
           fetch-depth: 0
+      
+      - name: Get package version
+        id: package-version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+            echo "Using manual version: $VERSION"
+          else
+            VERSION=$(node -p "require('./package.json').version")
+            echo "Using package.json version: $VERSION"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
         
       - name: Docker meta
         id: meta
@@ -27,11 +45,10 @@ jobs:
         with:
           images: watercrawl/mcp
           tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
+            type=raw,value=v${{ steps.package-version.outputs.version }}
+            type=raw,value=latest
             type=sha,format=short
-            latest
+            type=raw,value={{branch}}-{{sha}}
             
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -63,3 +80,5 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: |
+            VERSION=${{ steps.package-version.outputs.version }}

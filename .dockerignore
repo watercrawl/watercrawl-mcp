@@ -10,25 +10,33 @@ npm-debug.log
 yarn-debug.log
 yarn-error.log
 
-# Project specific
+# Source code (not needed since we install from npm)
 src
-tests
+bin
+dist
 scripts
+test
+tests
 *.ts
+*.js
 tsconfig.json
-.eslintrc
-.prettier*
-*.test.js
 coverage
 
-# Development environment
+# Development files
 .vscode
 .idea
 *.swp
 *.swo
 .DS_Store
+.eslintrc*
+.prettier*
 
-# Environment
+# Environment files
 .env
 .env.*
 !.env.example
+
+# Documentation and config
+README.md
+PUBLISHING.md
+*.md
