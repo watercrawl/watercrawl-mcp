@@ -74,6 +74,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
+          platforms: linux/amd64,linux/arm64
           # Only push if Docker Hub credentials are available
           push: ${{ steps.check-secrets.outputs.has_docker_secrets == 'true' }}
           tags: ${{ steps.meta.outputs.tags }}
