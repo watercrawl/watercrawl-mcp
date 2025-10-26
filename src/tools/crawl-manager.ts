@@ -50,12 +50,12 @@ const manageCrawl = async (args: CrawlManagerArgs | any, { session }: Context<an
 
 const parameters = z.object({
   action: z
-    .enum(['list', 'get', 'stop', 'download'])
+    .enum(['list', 'get', 'stop'])
     .describe('Action to perform on crawl requests'),
   crawlRequestId: z
     .string()
     .optional()
-    .describe('UUID of the crawl request (required for get, stop, and download actions)'),
+    .describe('UUID of the crawl request (required for get, stop actions)'),
   page: z
     .number()
     .optional()
@@ -70,7 +70,7 @@ const parameters = z.object({
 
 export const CrawlManagerTool: Tool<any, ToolParameters> = {
   name: 'manage-crawl',
-  description: 'Manage crawl requests: list, get details, stop, or download results',
+  description: 'Manage crawl requests: list, get details of single crawl request, stop crawl request',
   parameters: parameters,
   execute: manageCrawl,
 };
